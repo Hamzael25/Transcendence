@@ -1,0 +1,61 @@
+services:
+  nginx:
+    build: ./nginx
+    container_name: pong_nginx
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./static:/static
+      - ./media:/app/media
+      - /dev/null:/var/log/nginx/access.log 
+    depends_on:
+      - uvicorn
+    networks:
+      - pong_network
+
+  uvicorn:
+    build: .
+    container_name: pong_uvicorn
+    command: /app/entrypoint.sh
+    volumes:
+      - .:/app
+      - ./media:/app/media
+    env_file:
+      - .env
+    expose:
+      - "8000"
+    logging:
+      driver: "none"
+    depends_on:
+      - db
+      - redis
+    networks:
+      - pong_network
+
+  db:
+    image: postgres:15
+    container_name: pong_db
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - pong_network
+
+  redis:
+    image: redis:alpine
+    container_name: pong_redis
+    env_file:
+      - .env
+    networks:
+      - pong_network
+
+networks:
+  pong_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

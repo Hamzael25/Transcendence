@@ -1,0 +1,35 @@
+{% load i18n %}
+<div id="register" class="container-fluid d-flex flex-column align-items-center" style="padding-top: 20px; height: 100%;">
+  <div class="col-8 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
+    <h1 class="text-center text-white title mb-3">{% trans "Inscription" %}</h1>
+    <form id="register-form" method="POST" novalidate>
+      {% csrf_token %}
+      <div class="form-group mb-2">
+        <label for="username" class="w-100">{% trans "Nom d'utilisateur :" %}</label>
+        <input type="text" class="form-control" id="username" name="username" required aria-required="true">
+      </div>
+      <div class="form-group mb-2">
+        <label for="password" class="w-100">{% trans "Mot de passe :" %}</label>
+        <input type="password" class="form-control" id="password" name="password1" required aria-required="true">
+      </div>
+      <div class="form-group mb-2">
+        <label for="confirm-password" class="w-100">{% trans "Confirmer le mot de passe :" %}</label>
+        <input type="password" class="form-control" id="confirm-password" name="password2" required aria-required="true">
+      </div>
+      <button id="submit-btn" type="submit" class="btn btn-primary btn-70 mt-4 mb-3">
+        {% trans "S'inscrire" %}
+      </button>
+      <div id="register-error" class="text-danger mt-2"></div>
+    </form>
+  </div>
+</div>
+
+<style>
+  html, body {
+    overflow-y: auto;
+  }
+  #content {
+    min-height: 100vh !important;
+    height: auto !important;
+  }
+</style>
